@@ -1,4 +1,3 @@
-package com.retail.billing;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -53,6 +52,7 @@ public class RetailSystem extends JFrame {
         gbc.gridy = 0;
         topPanel.add(new JLabel("Bill No:"), gbc);
         gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         billNoField = new JTextField(15);
         topPanel.add(billNoField, gbc);
 
@@ -60,6 +60,7 @@ public class RetailSystem extends JFrame {
         gbc.gridy = 1;
         topPanel.add(new JLabel("Customer Name:"), gbc);
         gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         customerNameField = new JTextField(15);
         topPanel.add(customerNameField, gbc);
 
@@ -67,31 +68,74 @@ public class RetailSystem extends JFrame {
         gbc.gridy = 2;
         topPanel.add(new JLabel("Phone No:"), gbc);
         gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         phoneField = new JTextField(15);
         topPanel.add(phoneField, gbc);
 
         // Middle Panel for Product Selection
-        JPanel middlePanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel middlePanel = new JPanel(new GridBagLayout());
 
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        middlePanel.add(new JLabel("Select Category:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         categoryComboBox = new JComboBox<>(new String[]{"Cosmetics", "Groceries", "Electronics"});
         categoryComboBox.addActionListener(new CategorySelectionListener());
-        middlePanel.add(new JLabel("Select Category:"));
-        middlePanel.add(categoryComboBox);
+        middlePanel.add(categoryComboBox, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        middlePanel.add(new JLabel("Select Product:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         productComboBox = new JComboBox<>(new Vector<>(inventory.get("Cosmetics").keySet()));
-        middlePanel.add(new JLabel("Select Product:"));
-        middlePanel.add(productComboBox);
+        middlePanel.add(productComboBox, gbc);
 
-        middlePanel.add(new JLabel("Quantity:"));
-        quantityField = new JTextField();
-        middlePanel.add(quantityField);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        middlePanel.add(new JLabel("Quantity:"), gbc);
 
-        middlePanel.add(new JLabel("Discount (%):"));
-        discountField = new JTextField();
-        middlePanel.add(discountField);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        quantityField = new JTextField();  // Removed column size to allow layout to dictate width
+        gbc.weightx = 0.5;  // Allow the text field to expand
+        middlePanel.add(quantityField, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0;  // Reset weight
+        middlePanel.add(new JLabel("Discount (%):"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        discountField = new JTextField();  // Removed column size to allow layout to dictate width
+        gbc.weightx = 0.5;  // Allow the text field to expand
+        middlePanel.add(discountField, gbc);
+
+        // Align the Add to Cart button to the right
         JButton addToCartButton = new JButton("Add to Cart");
-        middlePanel.add(addToCartButton);
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST; // Align to the right
+        gbc.weightx = 0;
+        middlePanel.add(addToCartButton, gbc);
         addToCartButton.addActionListener(new AddToCartListener());
 
         // Bottom Panel for Bill Display
